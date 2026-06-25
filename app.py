@@ -1,34 +1,59 @@
 from flask import Flask, render_template, request
 import requests
+import os
 
 app = Flask(__name__)
 
-API_KEY = "54c8bd4711e1585672480df61dcc37ad"
+# OpenWeather API Key
+API_KEY = os.environ.get("API_KEY", "54c8bd4711e1585672480df61dcc37ad")
+
 
 @app.route("/", methods=["GET", "POST"])
 def home():
 
     weather = None
+    error = None
 
     if request.method == "POST":
 
-        city = request.form["city"]
+        city = request.form.get("city")
 
-        url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+        if city:
 
-        response = requests.get(url)
-        data = response.json()
+            url = (
+                f"https://api.openweathermap.org/data/2.5/weather"
+                f"?q={city}&appid={API_KEY}&units=metric"
+            )
 
-        if data["cod"] == 200:
+            try:
+                response = requests.get(url, timeout=10)
+                data = response.json()
 
-            weather = {
-                "city": city,
-                "temp": data["main"]["temp"],
-                "description": data["weather"][0]["description"],
-                "humidity": data["main"]["humidity"]
-            }
+                if response.status_code == 200:
 
-    return render_template("index.html", weather=weather)
+                    weather = {
+                        "city": data["name"],
+                        "temp": round(data["main"]["temp"]),
+                        "description": data["weather"][0]["description"].title(),
+                        "humidity": data["main"]["humidity"],
+                        "feels_like": round(data["main"]["feels_like"]),
+                        "pressure": data["main"]["pressure"],
+                        "wind": data["wind"]["speed"],
+                        "icon": data["weather"][0]["icon"],
+                    }
+
+                else:
+                    error = "City not found."
+
+            except Exception:
+                error = "Unable to fetch weather data."
+
+    return render_template(
+        "index.html",
+        weather=weather,
+        error=error
+    )
+
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run()

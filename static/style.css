@@ -451,3 +451,68 @@ opacity:0;
 }
 
 }
+.dark-mode{
+
+background:linear-gradient(135deg,#000000,#111827,#1f2937)!important;
+
+transition:0.5s;
+
+}
+
+.dark-mode .weather-card{
+
+background:rgba(0,0,0,.45);
+
+color:white;
+
+}
+
+.dark-mode input{
+
+background:rgba(255,255,255,.1);
+
+color:white;
+
+}
+
+.dark-mode button{
+
+background:#2563eb;
+
+}
+
+.darkBtn{
+
+position:fixed;
+
+top:20px;
+
+right:20px;
+
+width:55px;
+
+height:55px;
+
+border-radius:50%;
+
+border:none;
+
+cursor:pointer;
+
+font-size:22px;
+
+background:white;
+
+box-shadow:0 10px 25px rgba(0,0,0,.3);
+
+z-index:9999;
+
+transition:.3s;
+
+}
+
+.darkBtn:hover{
+
+transform:rotate(180deg) scale(1.1);
+
+}

@@ -77,33 +77,25 @@ card.style.transform="translateY(0) scale(1)";
 
 // Dark Mode
 
-const toggle=document.createElement("button");
+const toggle = document.querySelector(".darkBtn");
 
-toggle.innerHTML="🌙";
+if (toggle) {
 
-toggle.className="darkBtn";
+    toggle.addEventListener("click", () => {
 
-document.body.appendChild(toggle);
+        document.body.classList.toggle("dark-mode");
 
-let dark=false;
+        if (document.body.classList.contains("dark-mode")) {
 
-toggle.onclick=()=>{
+            toggle.innerHTML = "☀️";
 
-dark=!dark;
+        } else {
 
-if(dark){
+            toggle.innerHTML = "🌙";
 
-document.body.style.background="linear-gradient(135deg,#111827,#000000)";
+        }
 
-toggle.innerHTML="☀";
-
-}else{
-
-document.body.style.background="linear-gradient(135deg,#0f172a,#1e3a8a,#2563eb)";
-
-toggle.innerHTML="🌙";
-
-}
+    });
 
 }
 
